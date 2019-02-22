@@ -30,5 +30,5 @@
         "psr-4": {
             "MuhamedDidovic\\Throttle\\Tests\\": "tests/"
         }
-    },
+    }
 }
