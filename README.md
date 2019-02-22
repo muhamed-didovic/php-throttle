@@ -11,5 +11,5 @@ PHP/Zend Throttle requires [PHP](https://php.net) 5.5 and up
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require muhamed-didovic/php-throttle
+$ composer require muhamed-didovic/throttle
 ```
