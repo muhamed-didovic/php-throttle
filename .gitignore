@@ -1,0 +1,50 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Laravel template
+vendor/
+node_modules/
+npm-debug.log
+
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+storage/*.key
+.env.*.php
+.env.php
+.env
+Homestead.yaml
+Homestead.json
+
+# Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
+.rocketeer/
+### ZendFramework template
+# Composer files
+composer.phar
+vendor/
+
+# Local configs
+config/autoload/*.local.php
+
+# Binary gettext files
+*.mo
+
+# Data
+data/logs/
+data/cache/
+data/sessions/
+data/tmp/
+temp/
+
+#Doctrine 2
+data/DoctrineORMModule/Proxy/
+data/DoctrineORMModule/cache/
+
+# Legacy ZF1
+demos/
+extras/documentation
+
+#JetBrains
+.idea

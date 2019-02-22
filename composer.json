@@ -1,0 +1,34 @@
+{
+    "name": "muhamed-didovic/throttle",
+    "description": "PHP throttle package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Muhamed Didovic",
+            "email": "muhamed.didovic@gmail.com"
+        },
+        {
+            "name": "Goran Radosevic",
+            "email": "goran.radosevic@outlook.com"
+        }
+    ],
+    "require": {
+        "illuminate/cache": "5.4.*",
+        "illuminate/contracts": "5.4.*",
+        "illuminate/http": "5.4.*",
+        "illuminate/support": "5.4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-4" : {
+            "MuhamedDidovic\\Throttle\\" : "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MuhamedDidovic\\Throttle\\Tests\\": "tests/"
+        }
+    },
+}
