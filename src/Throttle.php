@@ -14,20 +14,13 @@ use Illuminate\Filesystem\Filesystem;
 
 /**
  * This is the throttle class.
- *
- * @method bool attempt(array|\Illuminate\Http\Request $data, int $limit, int $time)
- * @method \MuhamedDidovic\Throttle\Throttlers\ThrottlerInterface hit(array|\Illuminate\Http\Request $data, int $limit, int $time)
- * @method \MuhamedDidovic\Throttle\Throttlers\ThrottlerInterface clear(array|\Illuminate\Http\Request $data, int $limit, int $time)
- * @method int count(array|\Illuminate\Http\Request $data, int $limit, int $time)
- * @method bool check(array|\Illuminate\Http\Request $data, int $limit, int $time)
- *
  */
 class Throttle
 {
     /**
      * The cached throttler instances.
      *
-     * @var \MuhamedDidovic\Throttle\Throttlers\ThrottlerInterface[]
+     * @var Throttlers\ThrottlerInterface[]
      */
     protected $throttlers = [];
 
@@ -63,19 +56,42 @@ class Throttle
      * Get a new throttler.
      *
      * @param mixed $data
-     * @param int   $limit
-     * @param int   $time
+     * @param int $limit
+     * @param int $time
      *
-     * @return \MuhamedDidovic\Throttle\Throttlers\ThrottlerInterface
+     * @param null $routes
+     * @return Throttlers\ThrottlerInterface
+     * @internal param null $rules
      */
-    public function get($data, $limit = 10, $time = 60)
+    public function get($data, $limit = 10, $time = 1, $routes = NULL)
     {
-        $transformed = $this->transformer->make($data)->transform($data, $limit, $time);
+        if($routes){
+            foreach($routes as $route){
+                if(empty($route) || empty($route['url'])) continue;
 
-        if (!array_key_exists($key = $transformed->getKey(), $this->throttlers)) {
-            $this->throttlers[$key] = $this->factory->make($transformed);
+                $routeUrl = $route['url'];
+                $routeLimit = !empty($route['limit'])?$route['limit']: $limit;
+                $routeTime = !empty($route['time'])?$route['time']:$time;
+                $routeMethod = !empty($route['method'])? $route['method']: 'GET';
+
+                if($routeUrl != $data->getPathInfo() || $routeMethod != $data->getMethod()){
+                    continue;
+                }
+                $routeData = [
+                    'ip' => $data->getClientIp(),
+                    'route' => $routeMethod.$routeUrl
+                ];
+                $transformed = $this->transformer->make($routeData)->transform($routeData, $routeLimit, $routeTime);
+                if (!array_key_exists($key = $transformed->getKey(), $this->throttlers)) {
+                    $this->throttlers[$key] = $this->factory->make($transformed);
+                }
+            }
+        }else{
+            $transformed = $this->transformer->make($data)->transform($data, $limit, $time);
+            if (!array_key_exists($key = $transformed->getKey(), $this->throttlers)) {
+                $this->throttlers[$key] = $this->factory->make($transformed);
+            }
         }
-
         return $this->throttlers[$key];
     }
 
@@ -111,6 +127,7 @@ class Throttle
      */
     public function __call($method, array $parameters)
     {
+        //print_r($parameters);die;
         return $this->get(...$parameters)->$method();
     }
 }

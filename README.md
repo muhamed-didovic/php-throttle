@@ -13,3 +13,29 @@ To get the latest version, simply require the project using [Composer](https://g
 ```bash
 $ composer require muhamed-didovic/throttle
 ```
+
+## Usage
+
+```
+$throttle = new MuhamedDidovic\Throttle\Throttle();
+$routes = [
+      [
+          'url' => '/signup',
+          'limit' => 10,
+          'time' => 2
+      ],
+      [
+          'url' => '/signin',
+          'limit' => 3,
+      ],
+      [
+          'url' => '/signin',
+          'limit' => 2,
+          'method' => 'POST'
+      ]
+];
+//Time is in minutes, the default number of attempts 100/1 minute
+if (!$throttle->attempt($request, (int) 100, (int) $time = 1, $routes)) {
+    echo "Rate limit exceeded. Please wait ".$time * 60 . " sec."; die;
+}
+```
