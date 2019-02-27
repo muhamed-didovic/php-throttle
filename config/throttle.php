@@ -17,6 +17,6 @@ return [
     |
     */
 
-    'driver' => null,
+    'driver' => 'file',
 
 ];
