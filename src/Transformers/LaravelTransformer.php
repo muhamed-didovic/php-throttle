@@ -7,7 +7,7 @@ namespace MuhamedDidovic\Throttle\Transformers;
 use MuhamedDidovic\Throttle\Data;
 use InvalidArgumentException;
 
-class ObjectTransformer implements TransformerInterface
+class LaravelTransformer implements TransformerInterface
 {
     /**
      * Transform the data into a new data instance.
@@ -22,11 +22,6 @@ class ObjectTransformer implements TransformerInterface
      */
     public function transform($data, $limit = 10, $time = 60)
     {
-        if (!empty($data->ip) && !empty($data->route)) {
-            $method = strtoupper(!empty($data->method)?$data->method:'GET');
-            return new Data((string) $data->ip, (string) $method.$data->route, (int) $limit, (int) $time);
-        }
-
-        throw new InvalidArgumentException('The data object does not provide the required ip and route information.');
+        return new Data((string) $data->ip(), (string) $data->method().$data->path(), (int) $limit, (int) $time);
     }
 }

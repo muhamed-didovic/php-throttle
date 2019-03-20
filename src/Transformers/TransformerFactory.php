@@ -29,17 +29,15 @@ class TransformerFactory implements TransformerFactoryInterface
     public function make($data)
     {
         if ($data instanceof Request) {
-            return new ObjectTransformer();
+            return new LaravelTransformer();
         } else if($data instanceof Zend_Controller_Request_Http){
             return new ZendRequestTransformer();
         } else if(is_object($data)){
             return new ObjectTransformer();
-        }
-
-        if (is_array($data)) {
+        }else if (is_array($data)) {
             return new ArrayTransformer();
         }
 
-        throw new InvalidArgumentException('An array, or an instance of Illuminate\Http\Request was expected.');
+        throw new InvalidArgumentException('An array, object, or an instance of Illuminate\Http\Request or Zend_Controller_Request_Http was expected.');
     }
 }

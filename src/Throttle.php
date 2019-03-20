@@ -62,14 +62,15 @@ class Throttle
                 $routeTime = !empty($route['time'])?$route['time']:$this->config['time'];
                 $routeMethod = !empty($route['method'])? $route['method']: 'GET';
 
-                if($routeUrl != $data->getPathInfo() || $routeMethod != $data->getMethod()){
+                $transformer = $this->transformer->make($data);
+
+                $transformed = $transformer->transform($data, $routeLimit, $routeTime);
+                if(!$transformed) continue;
+
+                if($routeMethod.$routeUrl != $transformed->getRoute()){
                     continue;
                 }
-                $routeData = [
-                    'ip' => $data->getClientIp(),
-                    'route' => $routeMethod.$routeUrl
-                ];
-                $transformed = $this->transformer->make($routeData)->transform($routeData, $routeLimit, $routeTime);
+
                 if (!array_key_exists($key = $transformed->getKey(), $this->throttlers)) {
                     $this->throttlers[$key] = $this->factory->make($transformed);
                 }
