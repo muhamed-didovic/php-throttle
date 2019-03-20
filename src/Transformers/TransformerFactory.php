@@ -9,6 +9,7 @@ namespace MuhamedDidovic\Throttle\Transformers;
 
 use InvalidArgumentException;
 use Zend_Controller_Request_Http;
+use Illuminate\Http\Request;
 
 /**
  * This is the transformer factory class.
@@ -27,8 +28,12 @@ class TransformerFactory implements TransformerFactoryInterface
      */
     public function make($data)
     {
-        if (is_object($data) && $data instanceof Zend_Controller_Request_Http) {
-            return new RequestTransformer();
+        if ($data instanceof Request) {
+            return new ObjectTransformer();
+        } else if($data instanceof Zend_Controller_Request_Http){
+            return new ZendRequestTransformer();
+        } else if(is_object($data)){
+            return new ObjectTransformer();
         }
 
         if (is_array($data)) {
