@@ -1,7 +1,6 @@
 <?php
 
 //declare(strict_types=1);
-
 namespace MuhamedDidovic\Throttle\Transformers;
 
 use MuhamedDidovic\Throttle\Data;
@@ -20,9 +19,9 @@ class ArrayTransformer implements TransformerInterface
      * @param int   $limit
      * @param int   $time
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
-     * @return \MuhamedDidovic\Throttle\Data
+     * @return Data
      */
     public function transform($data, $limit = 10, $time = 60)
     {

@@ -20,7 +20,7 @@ class ThrottleApp
      */
     private $app;
     /**
-     * @var mixed
+     * @var Throttle
      */
     private $throttle;
     /**
@@ -32,27 +32,48 @@ class ThrottleApp
      * ThrottleApp constructor.
      * @param array $config
      */
-    public function __construct($config = []){
-
+    public function __construct($config = [])
+    {
+        
         $this->app = new Container();
-
+        
         $this->setupConfig($config);
         $this->setupAppConfig();
         $this->setupCache();
-
+        
         $this->registerFactory();
         $this->registerTransformer();
         $this->registerThrottle();
-
+    
         $this->throttle = $this->app->make('throttle');
     }
     
     /**
      * @return mixed
      */
-    public function getThrottle(){
+    public function getThrottle()
+    {
         return $this->throttle;
     }
+    
+    /**
+     * @return self
+     */
+    public function setThrottle($throttle)
+    {
+        $this->throttle = $throttle;
+        
+        return $this;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getFactoryFromThrottle()
+    {
+        return $this->throttle->getFactory();
+    }
+    
     
     /**
      *
@@ -60,31 +81,35 @@ class ThrottleApp
     protected function setupCache()
     {
         $this->app['config'] = [
-            'cache.default' => 'file',
+            'cache.default'     => 'file',
             'cache.stores.file' => [
                 'driver' => $this->config['cache.driver'],
-                'path' => $this->config['cache.path']
-            ]
+                'path'   => $this->config['cache.path'],
+            ],
         ];
+        
         // To use the file cache driver we need an instance of Illuminate's Filesystem, also stored in the container
         $this->app['files'] = new Filesystem;
-        $this->app->cache = new CacheManager($this->app);
+        $this->app->cache   = new CacheManager($this->app);
+        
     }
     
     /**
      * @param $inputs
      */
-    protected function setupConfig($inputs){
-
+    protected function setupConfig($inputs)
+    {
+        
         $defaults = array(
-            'cache.path'=> '/tmp',
+            'cache.path'   => '/tmp',
             'cache.driver' => 'file',
-            'limit' => 100,
-            'time' => 1,
-            'config.path' => __DIR__.'/../config/throttle.php'
+            'limit'        => 100,
+            'time'         => 1,
+            'config.path'  => __DIR__ . '/../config/throttle.php',
         );
-
+        
         $this->config = array_merge($defaults, $inputs);
+        
     }
     
     /**
@@ -92,10 +117,10 @@ class ThrottleApp
      */
     protected function setupAppConfig()
     {
-        $config = new Repository(require $this->config['config.path']);
+        $config            = new Repository(require $this->config['config.path']);
         $this->app->config = $config;
     }
-
+    
     /**
      * Register the factory class.
      *
@@ -105,11 +130,13 @@ class ThrottleApp
     {
         $this->app->singleton('throttle.factory', function (Container $app) {
             $cache = $app->cache->driver('file');
+            
             return new CacheFactory($cache);
         });
         $this->app->alias('throttle.factory', CacheFactory::class);
         $this->app->alias('throttle.factory', FactoryInterface::class);
     }
+    
     /**
      * Register the transformer class.
      *
@@ -123,6 +150,7 @@ class ThrottleApp
         $this->app->alias('throttle.transformer', TransformerFactory::class);
         $this->app->alias('throttle.transformer', TransformerFactoryInterface::class);
     }
+    
     /**
      * Register the throttle class.
      *
@@ -131,8 +159,9 @@ class ThrottleApp
     protected function registerThrottle()
     {
         $this->app->singleton('throttle', function (Container $app) {
-            $factory = $app['throttle.factory'];
+            $factory     = $app['throttle.factory'];
             $transformer = $app['throttle.transformer'];
+            
             return new Throttle($factory, $transformer, $this->config);
         });
         $this->app->alias('throttle', Throttle::class);

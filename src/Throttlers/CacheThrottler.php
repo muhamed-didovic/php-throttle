@@ -1,7 +1,6 @@
 <?php
 
 //declare(strict_types=1);
-
 namespace MuhamedDidovic\Throttle\Throttlers;
 
 use Countable;

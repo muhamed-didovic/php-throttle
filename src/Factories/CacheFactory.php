@@ -21,7 +21,7 @@ class CacheFactory implements FactoryInterface
      * @var \Illuminate\Contracts\Cache\Repository
      */
     protected $cache;
-
+    
     /**
      * Create a new instance.
      *
@@ -33,7 +33,7 @@ class CacheFactory implements FactoryInterface
     {
         $this->cache = $cache;
     }
-
+    
     /**
      * Make a new cache throttler instance.
      *
@@ -45,7 +45,7 @@ class CacheFactory implements FactoryInterface
     {
         return new CacheThrottler($this->cache->getStore(), $data->getKey(), $data->getLimit(), $data->getTime());
     }
-
+    
     /**
      * Get the cache instance.
      *
