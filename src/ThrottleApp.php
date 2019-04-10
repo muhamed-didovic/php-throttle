@@ -2,17 +2,36 @@
 
 namespace MuhamedDidovic\Throttle;
 
+use Illuminate\Cache\CacheManager;
+use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use MuhamedDidovic\Throttle\Factories\CacheFactory;
 use MuhamedDidovic\Throttle\Transformers\TransformerFactory;
 
+/**
+ * Class ThrottleApp
+ * @package MuhamedDidovic\Throttle
+ */
 class ThrottleApp
 {
+    /**
+     * @var Container
+     */
     private $app;
+    /**
+     * @var mixed
+     */
     private $throttle;
+    /**
+     * @var
+     */
     private $config;
-
+    
+    /**
+     * ThrottleApp constructor.
+     * @param array $config
+     */
     public function __construct($config = []){
 
         $this->app = new Container();
@@ -27,11 +46,17 @@ class ThrottleApp
 
         $this->throttle = $this->app->make('throttle');
     }
-
+    
+    /**
+     * @return mixed
+     */
     public function getThrottle(){
         return $this->throttle;
     }
-
+    
+    /**
+     *
+     */
     protected function setupCache()
     {
         $this->app['config'] = [
@@ -43,9 +68,12 @@ class ThrottleApp
         ];
         // To use the file cache driver we need an instance of Illuminate's Filesystem, also stored in the container
         $this->app['files'] = new Filesystem;
-        $this->app->cache = new \Illuminate\Cache\CacheManager($this->app);
+        $this->app->cache = new CacheManager($this->app);
     }
-
+    
+    /**
+     * @param $inputs
+     */
     protected function setupConfig($inputs){
 
         $defaults = array(
@@ -58,10 +86,13 @@ class ThrottleApp
 
         $this->config = array_merge($defaults, $inputs);
     }
-
+    
+    /**
+     *
+     */
     protected function setupAppConfig()
     {
-        $config = new \Illuminate\Config\Repository(require $this->config['config.path']);
+        $config = new Repository(require $this->config['config.path']);
         $this->app->config = $config;
     }
 
