@@ -16,7 +16,7 @@ use Laravel\Lumen\Application as LumenApplication;
 /**
  * This is the throttle service provider class.
  *
- * @author Graham Campbell <graham@alt-three.com>
+ * @author Muhamed Didovic <muhamed.didovic@gmail.com>
  */
 class ThrottleServiceProvider extends ServiceProvider
 {
