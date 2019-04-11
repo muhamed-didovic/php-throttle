@@ -1,11 +1,6 @@
 <?php
 
-//declare(strict_types=1);
-
-
 namespace MuhamedDidovic\Throttle\Transformers;
-
-
 
 use InvalidArgumentException;
 use Zend_Controller_Request_Http;
@@ -22,22 +17,29 @@ class TransformerFactory implements TransformerFactoryInterface
      *
      * @param mixed $data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
-     * @return \MuhamedDidovic\Throttle\Transformers\TransformerInterface
+     * @return TransformerInterface
      */
     public function make($data)
     {
+        
         if ($data instanceof Request) {
             return new LaravelTransformer();
-        } else if($data instanceof Zend_Controller_Request_Http){
+        }
+        
+        if($data instanceof Zend_Controller_Request_Http){
             return new ZendRequestTransformer();
-        } else if(is_object($data)){
+        }
+        
+        if(is_object($data)){
             return new ObjectTransformer();
-        }else if (is_array($data)) {
+        }
+        
+        if (is_array($data)) {
             return new ArrayTransformer();
         }
-
+        
         throw new InvalidArgumentException('An array, object, or an instance of Illuminate\Http\Request or Zend_Controller_Request_Http was expected.');
     }
 }
