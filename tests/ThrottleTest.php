@@ -12,8 +12,6 @@ use MuhamedDidovic\Throttle\Transformers\ArrayTransformer;
 use MuhamedDidovic\Throttle\Transformers\TransformerFactoryInterface;
 use Mockery;
 
-//use Illuminate\Contracts\Cache\Store;
-
 /**
  * This is the throttle test class.
  *
@@ -21,46 +19,6 @@ use Mockery;
  */
 class ThrottleTest extends AbstractTestBenchTestCase
 {
-    
-    /**
-     * @test
-     */
-    public function make()
-    {
-        extract($this->getThrottle());
-        
-        /** @var Throttle $throttle */
-        $return = $throttle->get($data, 12, 123);
-        
-        $this->assertInstanceOf(CacheThrottler::class, $return);
-    }
-    
-    /**
-     * @test
-     */
-    public function cache()
-    {
-        extract($this->getThrottle());
-        
-        for ($i = 0; $i < 3; $i++) {
-            $return = $throttle->get($data, 12, 123);
-            $this->assertInstanceOf(CacheThrottler::class, $return);
-        }
-    }
-    
-    /**
-     * @test
-     */
-    public function call()
-    {
-        extract($this->getThrottle());
-        
-        $throttler->shouldReceive('hit')->once()->andReturnSelf();
-        
-        $return = $throttle->hit($data, 12, 123);
-        
-        $this->assertInstanceOf(CacheThrottler::class, $return);
-    }
     
     /**
      * @return array
@@ -117,5 +75,45 @@ class ThrottleTest extends AbstractTestBenchTestCase
         
         //dd('***',compact('throttle', 'throttler', 'data', 'factory'));
         return compact('throttle', 'throttler', 'data', 'factory');
+    }
+    
+    /**
+     * @test
+     */
+    public function make()
+    {
+        extract($this->getThrottle());
+        
+        /** @var Throttle $throttle */
+        $return = $throttle->get($data, 12, 123);
+        
+        $this->assertInstanceOf(CacheThrottler::class, $return);
+    }
+    
+    /**
+     * @test
+     */
+    public function cache()
+    {
+        extract($this->getThrottle());
+        
+        for ($i = 0; $i < 3; $i++) {
+            $return = $throttle->get($data, 12, 123);
+            $this->assertInstanceOf(CacheThrottler::class, $return);
+        }
+    }
+    
+    /**
+     * @test
+     */
+    public function call()
+    {
+        extract($this->getThrottle());
+        
+        $throttler->shouldReceive('hit')->once()->andReturnSelf();
+        
+        $return = $throttle->hit($data, 12, 123);
+        
+        $this->assertInstanceOf(CacheThrottler::class, $return);
     }
 }
