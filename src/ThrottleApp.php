@@ -67,6 +67,7 @@ class ThrottleApp
     }
     
     /**
+     * Get factory from throttle
      * @return mixed
      */
     public function getFactoryFromThrottle()

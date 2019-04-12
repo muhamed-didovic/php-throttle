@@ -64,7 +64,6 @@ class ThrottleTest extends AbstractTestBenchTestCase
         $throttle    = new Throttle($factory, $transformer, $config);
         $throttleApp = (new ThrottleApp($config))->setThrottle($throttle);
         
-        //dd('12123', $throttleApp->getFactoryFromThrottle()->shouldReceive('make'));
         $throttleApp
             //->getFactory()
             ->getFactoryFromThrottle()
@@ -73,7 +72,6 @@ class ThrottleTest extends AbstractTestBenchTestCase
             ->with($transformed)
             ->andReturn($throttler);
         
-        //dd('***',compact('throttle', 'throttler', 'data', 'factory'));
         return compact('throttle', 'throttler', 'data', 'factory');
     }
     
