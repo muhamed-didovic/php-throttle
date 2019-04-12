@@ -1,6 +1,5 @@
 <?php
 
-//declare(strict_types=1);
 namespace MuhamedDidovic\Tests\Throttle;
 
 use GrahamCampbell\TestBench\AbstractTestCase as AbstractTestBenchTestCase;
