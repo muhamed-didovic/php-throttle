@@ -33,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "MuhamedDidovic\\Throttle\\Tests\\": "tests/"
+            "MuhamedDidovic\\Tests\\Throttle\\": "tests/"
         }
     },
     "minimum-stability" : "dev"
