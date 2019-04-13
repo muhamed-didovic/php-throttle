@@ -1,7 +1,5 @@
 <?php
 
-//declare(strict_types=1);
-
 namespace MuhamedDidovic\Throttle;
 
 use MuhamedDidovic\Throttle\Factories\CacheFactory;
@@ -102,8 +100,8 @@ class ThrottleServiceProvider extends ServiceProvider
         $this->app->singleton('throttle', function (Container $app) {
             $factory = $app['throttle.factory'];
             $transformer = $app['throttle.transformer'];
-
-            return new Throttle($factory, $transformer);
+//dd(require __DIR__ . '/../config/throttle.php');
+            return new Throttle($factory, $transformer, require __DIR__ . '/../config/throttle.php');
         });
 
         $this->app->alias('throttle', Throttle::class);
