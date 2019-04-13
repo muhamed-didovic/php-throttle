@@ -12,6 +12,10 @@ use MuhamedDidovic\Throttle\Transformers\TransformerFactoryInterface;
 class Throttle
 {
     /**
+     * @var bool
+     */
+    public $withMiddleware = false;
+    /**
      * The cached throttler instances.
      *
      * @var Throttlers\ThrottlerInterface[]
@@ -51,6 +55,14 @@ class Throttle
     }
     
     /**
+     * Laravel middleware will be used
+     */
+    public function enableMiddleware()
+    {
+        $this->withMiddleware = true;
+    }
+    
+    /**
      * Get a new throttler.
      *
      * @param mixed $data
@@ -58,15 +70,9 @@ class Throttle
      * @return Throttlers\ThrottlerInterface
      * @internal param null $routes
      */
-    public function get($data)
+    public function get($data, $limit = 10, $time = 60)
     {
-       
-        if ($this->config['routes']) {
-            
-            //ensure we have time for routes
-            if (empty($this->config['time'])){
-                return;
-            }
+        if ($this->config['routes'] && !$this->withMiddleware) {
             
             foreach ($this->config['routes'] as $route) {
                 if (empty($route) || empty($route['url'])) {
@@ -77,17 +83,16 @@ class Throttle
                 $routeLimit  = !empty($route['limit']) ? $route['limit'] : $this->config['limit'];
                 $routeTime   = !empty($route['time']) ? $route['time'] : $this->config['time'];
                 $routeMethod = !empty($route['method']) ? $route['method'] : 'GET';
-               
+                
                 $transformed = $this
                     ->transformer
                     ->make($data)
-                    ->transform($data, $routeLimit, $routeTime); // 10, 1 - 12, 123
+                    ->transform($data, $routeLimit, $routeTime);
                 
                 if (!$transformed || $routeMethod . $routeUrl != $transformed->getRoute()) {
                     continue;
                 }
                 
-                //dd('a', $transformed);
                 if (!array_key_exists($key = $transformed->getKey(), $this->throttlers)) {
                     $this->throttlers[$key] = $this->factory->make($transformed);
                 }
@@ -97,7 +102,13 @@ class Throttle
             $transformed = $this
                 ->transformer
                 ->make($data)
-                ->transform($data, $this->config['limit'], $this->config['time']);
+                ->transform(
+                    $data,
+                    $this->withMiddleware ? $limit : $this->config['limit'], //check is Laravel used
+                    $this->withMiddleware ? $time : $this->config['time'] //check is Laravel used
+                //!empty($this->config['limit']) ? $this->config['limit'] : 10,
+                //!empty($this->config['time']) ? $this->config['time'] : 1
+                );
             
             if (!array_key_exists($key = $transformed->getKey(), $this->throttlers)) {
                 $this->throttlers[$key] = $this->factory->make($transformed);
