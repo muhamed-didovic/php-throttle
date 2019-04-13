@@ -30,6 +30,7 @@ class ThrottleMiddleware
     public function __construct(Throttle $throttle)
     {
         $this->throttle = $throttle;
+        $this->throttle->enableMiddleware();
     }
 
     /**
