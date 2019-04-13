@@ -77,39 +77,19 @@ class ThrottleApp
     
     
     /**
-     *
+     * @param $configOverrides
      */
-    protected function setupCache()
+    protected function setupConfig($configOverrides)
     {
-        $this->app['config'] = [
-            'cache.default'     => 'file',
-            'cache.stores.file' => [
-                'driver' => $this->config['cache.driver'],
-                'path'   => $this->config['cache.path'],
-            ],
-        ];
-        
-        // To use the file cache driver we need an instance of Illuminate's Filesystem, also stored in the container
-        $this->app['files'] = new Filesystem;
-        $this->app->cache   = new CacheManager($this->app);
-        
-    }
-    
-    /**
-     * @param $inputs
-     */
-    protected function setupConfig($inputs)
-    {
-        
         $defaults = array(
-            'cache.path'   => '/tmp',
-            'cache.driver' => 'file',
-            'limit'        => 100,
-            'time'         => 1,
+//            'cache.path'   => '/tmp',
+//            'cache.driver' => 'file',
+//            'limit'        => 100,
+//            'time'         => 1,
             'config.path'  => __DIR__ . '/../config/throttle.php',
         );
         
-        $this->config = array_merge($defaults, $inputs);
+        $this->config = array_merge($defaults, $configOverrides);
         
     }
     
@@ -123,6 +103,31 @@ class ThrottleApp
     }
     
     /**
+     *
+     */
+    protected function setupCache()
+    {
+        
+        $this->app->config->set('cache.default', $this->app->config->get('driver'));
+        $this->app->config->set('cache.stores.file', [
+            'driver' => $this->config['cache.driver'],
+            'path'   => $this->config['cache.path'],
+        ]);
+//        $this->app['config'] = [
+//            'cache.default'=> $this->app->config->get('driver'),
+//            'cache.stores.file' => [
+//                'driver' => $this->config['cache.driver'],
+//                'path'   => $this->config['cache.path'],
+//            ],
+//        ];
+        
+        // To use the file cache driver we need an instance of Illuminate's Filesystem, also stored in the container
+        $this->app['files'] = new Filesystem;
+        $this->app->cache   = new CacheManager($this->app);
+        
+    }
+    
+    /**
      * Register the factory class.
      *
      * @return void
@@ -130,7 +135,8 @@ class ThrottleApp
     protected function registerFactory()
     {
         $this->app->singleton('throttle.factory', function (Container $app) {
-            $cache = $app->cache->driver('file');
+            //$cache = $app->cache->driver('file');
+            $cache = $app->cache->driver($app->config->get('driver'));
             
             return new CacheFactory($cache);
         });
