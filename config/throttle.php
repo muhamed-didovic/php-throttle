@@ -1,9 +1,7 @@
 <?php
 
-//declare(strict_types=1);
-
 return [
-
+    
     /*
     |--------------------------------------------------------------------------
     | Cache Driver
@@ -16,7 +14,17 @@ return [
     | Default: null
     |
     */
-
-    'driver' => 'file',
+    
+    'driver'       => 'file',
+    //todo: add desc
+    'cache.path'   => '/tmp',
+    'cache.driver' => 'file',
+    'limit'        => 10,
+    'time'         => 1,
+    
+    // place to store routes that we want to use throttle on
+    'routes'       => [
+    
+    ],
 
 ];
