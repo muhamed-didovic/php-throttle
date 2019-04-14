@@ -1,6 +1,6 @@
 <?php
 
-namespace MuhamedDidovic\Throttle;
+namespace MuhamedDidovic\Tests\Throttle;
 
 /**
  * Base test class
