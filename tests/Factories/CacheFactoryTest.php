@@ -2,7 +2,8 @@
 
 namespace MuhamedDidovic\Tests\Throttle\Factories;
 
-use GrahamCampbell\TestBench\AbstractTestCase;
+//use GrahamCampbell\TestBench\AbstractTestCase;
+use MuhamedDidovic\Tests\Throttle\AbstractTestCase;
 use MuhamedDidovic\Throttle\Data;
 use MuhamedDidovic\Throttle\Factories\CacheFactory;
 use MuhamedDidovic\Throttle\Throttlers\CacheThrottler;
@@ -17,7 +18,10 @@ use Mockery;
  */
 class CacheFactoryTest extends AbstractTestCase
 {
-    public function testMake()
+    /**
+     * @test
+     */
+    public function make()
     {
         $throttle = $this->getFactory();
 
