@@ -28,7 +28,7 @@ class TransformerFactoryTest extends AbstractTestCase
         $factory = new TransformerFactory();
         
         $transformer = $factory->make($request = Mockery::mock(Request::class));
-//        dd(1, $transformer);
+
         $this->assertInstanceOf(LaravelTransformer::class, $transformer);
 
         $request->shouldReceive('getClientIp')->once()->andReturn('123.123.123.123');

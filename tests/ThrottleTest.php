@@ -76,6 +76,7 @@ class ThrottleTest extends AbstractTestBenchTestCase
     }
     
     /**
+     * @group fail
      * @test
      */
     public function make()
