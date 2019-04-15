@@ -16,7 +16,8 @@ return [
     */
     
     'driver'       => 'file',
-    
+    //same as above
+    'cache.driver' => 'file',
     //path where the files will be stored
     'cache.path'   => '/tmp',
     //default limit per route
