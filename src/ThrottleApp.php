@@ -81,13 +81,13 @@ class ThrottleApp
      */
     protected function setupConfig($configOverrides)
     {
-//        $defaults = array(
-//            //            'cache.path'   => '/tmp',
-//            //            'cache.driver' => 'file',
-//            //            'limit'        => 100,
-//            //            'time'         => 1,
-//            'config.path' => __DIR__ . '/../config/throttle.php',
-//        );
+        //        $defaults = array(
+        //            //            'cache.path'   => '/tmp',
+        //            //            'cache.driver' => 'file',
+        //            //            'limit'        => 100,
+        //            //            'time'         => 1,
+        //            'config.path' => __DIR__ . '/../config/throttle.php',
+        //        );
         
         $this->config = array_merge(require __DIR__ . '/../config/throttle.php', $configOverrides);
     }
@@ -97,7 +97,7 @@ class ThrottleApp
      */
     protected function setupAppConfig()
     {
-        $config      = new Repository($this->config);
+        $config            = new Repository($this->config);
         $this->app->config = $config;
     }
     
@@ -106,18 +106,18 @@ class ThrottleApp
      */
     protected function setupCache()
     {
-                $this->app->config->set('cache.default', $this->app->config->get('driver'));
-                $this->app->config->set('cache.stores.file', [
-                    'driver' => $this->config['cache.driver'],
-                    'path'   => $this->config['cache.path'],
-                ]);
-//        $this->app['config'] = [
-//            'cache.default'     => $this->app->config->get('driver'),
-//            'cache.stores.file' => [
-//                'driver' => $this->config['cache.driver'],
-//                'path'   => $this->config['cache.path'],
-//            ],
-//        ];
+        $this->app->config->set('cache.default', $this->app->config->get('driver'));
+        $this->app->config->set('cache.stores.file', [
+            'driver' => $this->config['cache.driver'],
+            'path'   => $this->app->config->get('driver')//$this->config['cache.path'],
+        ]);
+        //        $this->app['config'] = [
+        //            'cache.default'     => $this->app->config->get('driver'),
+        //            'cache.stores.file' => [
+        //                'driver' => $this->config['cache.driver'],
+        //                'path'   => $this->config['cache.path'],
+        //            ],
+        //        ];
         
         // To use the file cache driver we need an instance of Illuminate's Filesystem, also stored in the container
         $this->app['files'] = new Filesystem;

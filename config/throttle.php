@@ -16,12 +16,13 @@ return [
     */
     
     'driver'       => 'file',
-    //todo: add desc
-    'cache.path'   => '/tmp',
-    'cache.driver' => 'file',
-    'limit'        => 10,
-    'time'         => 1,
     
+    //path where the files will be stored
+    'cache.path'   => '/tmp',
+    //default limit per route
+    'limit'        => 10,
+    //default time in minutes per route
+    'time'         => 1,
     // place to store routes that we want to use throttle on
     'routes'       => [
     

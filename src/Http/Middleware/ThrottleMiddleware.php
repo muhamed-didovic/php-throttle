@@ -3,6 +3,7 @@
 namespace MuhamedDidovic\Throttle\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use MuhamedDidovic\Throttle\Throttle;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
@@ -16,14 +17,14 @@ class ThrottleMiddleware
     /**
      * The throttle instance.
      *
-     * @var \MuhamedDidovic\Throttle\Throttle
+     * @var Throttle
      */
     protected $throttle;
 
     /**
      * Create a new throttle middleware instance.
      *
-     * @param \MuhamedDidovic\Throttle\Throttle $throttle
+     * @param Throttle $throttle
      *
      * @return void
      */
@@ -36,12 +37,12 @@ class ThrottleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param Request $request
+     * @param Closure                  $next
      * @param int                      $limit
      * @param int                      $time
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException
+     * @throws TooManyRequestsHttpException
      *
      * @return mixed
      */
