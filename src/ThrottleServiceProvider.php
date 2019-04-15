@@ -100,7 +100,6 @@ class ThrottleServiceProvider extends ServiceProvider
         $this->app->singleton('throttle', function (Container $app) {
             $factory = $app['throttle.factory'];
             $transformer = $app['throttle.transformer'];
-//dd(require __DIR__ . '/../config/throttle.php');
             return new Throttle($factory, $transformer, require __DIR__ . '/../config/throttle.php');
         });
 
