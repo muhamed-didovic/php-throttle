@@ -90,6 +90,7 @@ class ThrottleTest extends AbstractTestBenchTestCase
     }
     
     /**
+     * @group tt
      * @test
      */
     public function cache()
